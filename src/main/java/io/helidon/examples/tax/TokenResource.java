@@ -102,14 +102,27 @@ public class TokenResource {
     }
 
     private String loadPrivateKeyContent() throws Exception {
+        // Try to load from classpath
         try (InputStream is = getClass().getResourceAsStream("/privateKey.pem")) {
-            if (is == null) {
-                throw new IllegalStateException("privateKey.pem not found in classpath");
+            if (is != null) {
+                String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                return cleanKeyContent(content);
             }
-            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            return content.replace("-----BEGIN PRIVATE KEY-----", "")
-                    .replace("-----END PRIVATE KEY-----", "")
-                    .replaceAll("\\s", "");
         }
+
+        // Try to load from environment variable
+        String envKey = System.getenv("PRIVATE_KEY_CONTENT");
+        if (envKey != null && !envKey.isBlank()) {
+            return cleanKeyContent(envKey);
+        }
+
+        throw new IllegalStateException(
+                "Private key not found. Please ensure 'privateKey.pem' is in classpath or 'PRIVATE_KEY_CONTENT' environment variable is set.");
+    }
+
+    private String cleanKeyContent(String content) {
+        return content.replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s", "");
     }
 }

@@ -7,9 +7,21 @@
     "paths": {
         "/tax/calculate": {
             "post": {
+                "operationId": "calculateTax",
+                "description": "Calculates tax based on the provided request. Requires Bearer Auth.",
                 "security": [
                     {
                         "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Bearer token obtained during login."
                     }
                 ],
                 "requestBody": {
@@ -168,5 +180,10 @@
                 }
             }
         }
-    }
+    },
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ]
 }
