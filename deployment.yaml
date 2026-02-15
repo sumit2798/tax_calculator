@@ -1,0 +1,38 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taxcalculation
+  labels:
+    app: taxcalculation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taxcalculation
+  template:
+    metadata:
+      labels:
+        app: taxcalculation
+    spec:
+      containers:
+      - name: taxcalculation
+        image: taxcalculation:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taxcalculation
+  labels:
+    app: taxcalculation
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30080
+  selector:
+    app: taxcalculation

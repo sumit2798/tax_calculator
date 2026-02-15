@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+
+  jwt:
+    expiration-seconds: 120
+
+
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: "/publicKey.pem"
+      issuer: "https://my-auth-server.com"
+
+openapi:
+  model:
+    reader:
+      class: "io.helidon.microprofile.openapi.OpenApiReader"
+  filter:
+    class: "io.helidon.microprofile.openapi.OpenApiFilter"

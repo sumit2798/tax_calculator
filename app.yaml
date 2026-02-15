@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: tax-calculator
+  labels:
+    app: tax-calculator
+spec:
+  type: ClusterIP
+  selector:
+    app: tax-calculator
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: tax-calculator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tax-calculator
+  template:
+    metadata:
+      labels:
+        app: tax-calculator
+        version: v1
+    spec:
+      containers:
+      - name: tax-calculator
+        image: tax-calculator
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080

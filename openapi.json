@@ -1,0 +1,198 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Generated API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/tax/calculate": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token": {
+      "get": {
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "AccountAddress": {
+        "type": "object",
+        "properties": {
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "LineItem": {
+        "type": "object",
+        "properties": {
+          "lineItemId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "TaxRequest": {
+        "type": "object",
+        "properties": {
+          "Source": {
+            "type": "string"
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "accountAddress": {
+            "$ref": "#/components/schemas/AccountAddress"
+          },
+          "lineItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          },
+          "Currency": {
+            "type": "string"
+          },
+          "TaxDate": {
+            "type": "string"
+          },
+          "TaxCode": {
+            "type": "string"
+          },
+          "AmountTaxed": {
+            "type": "string"
+          },
+          "TransactionID": {
+            "type": "string"
+          }
+        }
+      },
+      "TaxResult": {
+        "type": "object",
+        "properties": {
+          "lineItemId": {
+            "type": "string"
+          },
+          "taxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxRate": {
+            "type": "string"
+          }
+        }
+      },
+      "TaxResponse": {
+        "type": "object",
+        "properties": {
+          "taxResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxResult"
+            }
+          },
+          "totalTax": {
+            "type": "number",
+            "format": "double"
+          },
+          "CalculatedTax": {
+            "type": "string"
+          },
+          "TaxPercentage": {
+            "type": "string"
+          },
+          "GrossTaxamount": {
+            "type": "string"
+          },
+          "TaxCode": {
+            "type": "string"
+          },
+          "TransactionID": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
