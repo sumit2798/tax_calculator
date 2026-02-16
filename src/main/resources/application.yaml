@@ -10,8 +10,7 @@ server:
 mp:
   jwt:
     verify:
-      publickey:
-        location: "/publicKey.pem"
+      publickey: "${PUBLIC_KEY_CONTENT}"
       issuer: "https://my-auth-server.com"
 
 openapi:
